@@ -3,26 +3,31 @@
 
 int i = 0;
 
-// Note the return type: void*
-void* incrementingThreadFunction(){
-    // TODO: increment i 1_000_000 times
+void* thread_1(){
+    int j;
+    for (j = 0; j < 1000000; j++){
+        i++;
+    }
     return NULL;
 }
 
-void* decrementingThreadFunction(){
-    // TODO: decrement i 1_000_000 times
+void* thread_2(){
+    int j;
+    for (j = 0; j < 1000000; j++){
+        i--;
+    }
     return NULL;
 }
-
 
 int main(){
-    // TODO: declare incrementingThread and decrementingThread (hint: google pthread_create)
-    pthread_create(&incrementingThread, NULL, incrementingThreadFunction, NULL);
-    pthread_create(&decrementingThread, NULL, decrementingThreadFunction, NULL);
-    
-    pthread_join(incrementingThread, NULL);
-    pthread_join(decrementingThread, NULL);
-    
-    printf("The magic number is: %d\n", i);
+    pthread_t t1;
+    pthread_create(&t1, NULL, thread_1, NULL);
+    pthread_t t2;
+    pthread_create(&t2, NULL, thread_2, NULL);
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+    printf("%d", i);
+    printf("\n");
     return 0;
+
 }
